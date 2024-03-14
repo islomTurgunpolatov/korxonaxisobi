@@ -47,12 +47,20 @@ public class EmployeeService {
     }
 
 
-    public void delete(Long id) {
+    public Long deleteById(Long id) {
         employeeRepository.deleteById(id);
+        return id;
     }
 
+    public List<String> findJshshir(){
+        return employeeRepository.findJshshir();
+    }
 
-//    public String update(Employee employee, Long id) {
-//        return employeeRepository.updateEmployeeById(employee,id);
-//    }
+    public List<String> findPassportNumber(){
+        return employeeRepository.findPassportNumber();
+    }
+
+    public boolean exist(Long id) {
+        return employeeRepository.existsEmployeeById(id);
+    }
 }

@@ -3,9 +3,10 @@ package uz.KorxonaXisobi.korxonaElekronXisobi.vazifa_1.Enums.Entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import uz.KorxonaXisobi.korxonaElekronXisobi.vazifa_1.Enums.Position;
+import uz.KorxonaXisobi.korxonaElekronXisobi.vazifa7.Entities.UserPositionRole;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 public class Employee implements Serializable {
@@ -35,7 +36,7 @@ public class Employee implements Serializable {
 
     private String nation;
 
-    private String salary;
+    private double salary;
 
     @NotNull
     @Column(nullable = false)
@@ -44,7 +45,8 @@ public class Employee implements Serializable {
     @ManyToOne
     private Department department;
 
-    private Position position;
+    @ManyToOne
+    private UserPositionRole positionRole;
 
     @OneToOne(optional = false)
     @JoinColumn(name = "account_id", unique = true, nullable = false)
@@ -58,12 +60,12 @@ public class Employee implements Serializable {
         this.account = account;
     }
 
-    public Position getPosition() {
-        return position;
+    public UserPositionRole getPositionRole() {
+        return positionRole;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setPositionRole(UserPositionRole positionRole) {
+        this.positionRole = positionRole;
     }
 
     public Long getId() {
@@ -130,11 +132,11 @@ public class Employee implements Serializable {
         this.nation = nation;
     }
 
-    public String getSalary() {
+    public double getSalary() {
         return salary;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(double salary) {
         this.salary = salary;
     }
 

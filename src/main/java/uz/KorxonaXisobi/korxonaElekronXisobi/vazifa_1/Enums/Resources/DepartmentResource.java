@@ -18,7 +18,7 @@ public class DepartmentResource {
         this.departmentService = departmentService;
     }
 
-    @PostMapping("/department")
+    @PostMapping("/save/department")
     public ResponseEntity save(@RequestBody Department department){
         return ResponseEntity.ok(departmentService.save(department));
     }

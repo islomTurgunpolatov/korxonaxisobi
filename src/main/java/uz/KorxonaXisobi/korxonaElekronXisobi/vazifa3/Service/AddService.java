@@ -1,5 +1,8 @@
 package uz.KorxonaXisobi.korxonaElekronXisobi.vazifa3.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import uz.KorxonaXisobi.korxonaElekronXisobi.vazifa3.Entities.Advertising;
 import uz.KorxonaXisobi.korxonaElekronXisobi.vazifa3.Repository.AddRepository;
@@ -20,8 +23,8 @@ public class AddService {
         return addRepository.save(advertising);
     }
 
-    public List<Advertising> findAll() {
-        return addRepository.findAll();
+    public Page<Advertising> findAll(Pageable pageable) {
+        return addRepository.findAll(pageable);
     }
 
     public boolean exist(Long id) {
@@ -34,5 +37,9 @@ public class AddService {
 
     public Optional<Advertising> findById(Long id){
         return addRepository.findById(id);
+    }
+
+    public void deleteAddById(Long id) {
+        addRepository.deleteById(id);
     }
 }

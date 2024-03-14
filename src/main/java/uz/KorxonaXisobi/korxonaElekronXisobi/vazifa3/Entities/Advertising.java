@@ -1,9 +1,7 @@
 package uz.KorxonaXisobi.korxonaElekronXisobi.vazifa3.Entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import uz.KorxonaXisobi.korxonaElekronXisobi.vazifa_1.Enums.Entities.Account;
-import uz.KorxonaXisobi.korxonaElekronXisobi.vazifa_1.Enums.Entities.Employee;
 
 import java.io.Serializable;
 
@@ -16,14 +14,14 @@ public class Advertising implements Serializable {
 
     private String addType;
 
-    private String addExpense;
+    @Column(name = "add_expense_$")
+    private double addExpense$;
 
     private String addPeriod;
 
     private String addBeginTime;
 
-    @OneToOne
-    @JoinColumn(name = "employee_account_id", unique = true, nullable = false)
+    @ManyToOne
     private Account employeeAccount;
 
     public Long getId() {
@@ -42,12 +40,12 @@ public class Advertising implements Serializable {
         this.addType = addType;
     }
 
-    public String getAddExpense() {
-        return addExpense;
+    public double getAddExpense$() {
+        return addExpense$;
     }
 
-    public void setAddExpense(String addExpense) {
-        this.addExpense = addExpense;
+    public void setAddExpense$(double addExpense$) {
+        this.addExpense$ = addExpense$;
     }
 
     public String getAddPeriod() {

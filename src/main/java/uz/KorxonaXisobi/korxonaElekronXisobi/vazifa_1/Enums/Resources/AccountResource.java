@@ -19,7 +19,7 @@ public class AccountResource {
         this.accountService = accountService;
     }
 
-    @PostMapping("/account")
+    @PostMapping("/save/account")
     public ResponseEntity save(@RequestBody Account account){
         if (accountService.existAccount(account)){
             return new ResponseEntity("already exist", HttpStatus.BAD_REQUEST);

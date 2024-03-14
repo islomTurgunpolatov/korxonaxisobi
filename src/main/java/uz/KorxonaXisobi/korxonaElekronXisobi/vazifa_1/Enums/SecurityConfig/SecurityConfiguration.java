@@ -20,12 +20,45 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/api/add/employee").permitAll()
-                        .requestMatchers("/api/department").permitAll()
-                        .requestMatchers("/api/list","/api/one/employee/**","/api/delete/employee","/api/update/**").permitAll()
-                        .requestMatchers("/api/account","/api/client","/api/client/**").permitAll()
-                        .requestMatchers("/api/adds","/api/adds/list","/api/adds/param").permitAll()
-                        .requestMatchers("/api/").permitAll()
+
+                        //Employee entity permissions
+                        .requestMatchers("/api/add/employee"
+                                ,"/api/employee/list"
+                                ,"/api/one/employee/**").permitAll()
+                        .requestMatchers("/api/delete/employee").hasRole("DIRECTOR")
+
+                        //Department and Account entities permissions
+                        .requestMatchers("/api/save/department"
+                                ,"/api/save/account").hasAnyRole("DIRECTOR","HEAD_OF_DEPARTMENT")
+
+                        //Client entity permissions
+                        .requestMatchers("/api/add/client"
+                                ,"/api/client/**").permitAll()
+                        .requestMatchers("/api/delete/client/").hasAnyRole("DIRECTOR","HEAD_OF_DEPARTMENT")
+
+                        //Advertising(Expenses) entity permissions
+                        .requestMatchers("/api/save/adds"
+                                ,"/api/adds/list"
+                                ,"/api/find/adds/param"
+                        ,"/api/update/adds/**").permitAll()
+                        .requestMatchers("/api/delete/add/**").hasAnyRole("DIRECTOR","HEAD_OF_DEPARTMENT")
+
+                        //Statistics permissions
+                        .requestMatchers("/api/statistics/employee/**").hasAnyRole("DIRECTOR","HEAD_OF_DEPARTMENT")
+                        .requestMatchers("/api/statistics/client/date"
+                                ,"/api/statistics/active/employee"
+                                ,"/api/statistics/top3-employees"
+                                ,"/api/statistics/clients/last-month"
+                                ,"/api/statistics/date/most_clients-regitered").hasAnyRole("DIRECTOR","HEAD_OF_DEPARTMENT")
+                        .requestMatchers("/api/statistics/most-edd-expense"
+                                ,"/api/statistics/most-expensive-add-type"
+                        ,"/api/statistics/count-adds-within-month"
+                        ,"/api/statistics/count-stopped-adds-last-month").hasAnyRole("DIRECTOR","HEAD_OF_DEPARTMENT")
+
+                        //permissions for UserEntity
+                        .requestMatchers("/api/save/user").permitAll()
+                        .requestMatchers("/api/get/user"
+                        ,"/api/delete/user/**").hasAnyRole("DIRECTOR","HEAD_OF_DEPARTMENT")
                         .anyRequest().authenticated())
                 .httpBasic(withDefaults());
         return http.build();

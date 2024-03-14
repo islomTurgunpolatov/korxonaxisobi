@@ -1,5 +1,6 @@
 package uz.KorxonaXisobi.korxonaElekronXisobi.vazifa3.Resourse;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,34 +19,33 @@ public class AddResource {
         this.addService = addService;
     }
 
-    @PostMapping("/adds")
+    @PostMapping("/save/adds")
     public ResponseEntity save(@RequestBody Advertising advertising) {
         return ResponseEntity.ok(addService.save(advertising));
     }
 
     @GetMapping("/adds/list")
-    public ResponseEntity findAdd() {
-        return ResponseEntity.ok(addService.findAll());
+    public ResponseEntity findAll(Pageable pageable) {
+        return ResponseEntity.ok(addService.findAll(pageable));
     }
 
-    @GetMapping("/adds/param")
+    @GetMapping("find/adds/param")
     public ResponseEntity findByEmployeeAccount(@RequestParam Long id) {
         if (!addService.exist(id)) {
             return new ResponseEntity("not found", HttpStatus.NOT_FOUND);
-        }
-
-        return ResponseEntity.ok(addService.findByEmployeeAccountId(id));
+        } else
+            return ResponseEntity.ok(addService.findByEmployeeAccountId(id));
     }
 
-    @PatchMapping("/adds/{id}")
+    @PutMapping("update/adds/{id}")
     public ResponseEntity update(@PathVariable Long id,
-                                 @RequestBody Advertising advertising){
+                                 @RequestBody Advertising advertising) {
 
         Optional<Advertising> optionalAdd = addService.findById(id);
 
         if (optionalAdd.isPresent()) {
             Advertising existingAdd = getAdvertising(advertising, optionalAdd);
-            if (advertising.getEmployeeAccount() != null){
+            if (advertising.getEmployeeAccount() != null) {
                 return new ResponseEntity("permission denied", HttpStatus.BAD_REQUEST);
             }
 
@@ -57,21 +57,31 @@ public class AddResource {
         }
     }
 
-    private static Advertising getAdvertising(Advertising advertising, Optional<Advertising> optionalAdd) {
-            Advertising existingAdd = optionalAdd.get();
+    @DeleteMapping("/delete/add/{id}")
+    public ResponseEntity deleteAddById(@PathVariable Long id){
+        if (addService.exist(id)){
+            addService.deleteAddById(id);
+            return ResponseEntity.ok("deleted");
+        }
+        else
+            return new ResponseEntity("not found",HttpStatus.NOT_FOUND);
+    }
 
-            if (advertising.getAddType() != null) {
-                existingAdd.setAddType(advertising.getAddType());
-            }
-            if (advertising.getAddExpense() != null) {
-                existingAdd.setAddExpense(advertising.getAddExpense());
-            }
-            if (advertising.getAddPeriod() != null) {
-                existingAdd.setAddPeriod(advertising.getAddPeriod());
-            }
-            if (advertising.getAddBeginTime() != null) {
-                existingAdd.setAddBeginTime(advertising.getAddBeginTime());
-            }
-            return existingAdd;
+    private static Advertising getAdvertising(Advertising advertising, Optional<Advertising> optionalAdd) {
+        Advertising existingAdd = optionalAdd.get();
+
+        if (advertising.getAddType() != null) {
+            existingAdd.setAddType(advertising.getAddType());
+        }
+        if (advertising.getAddExpense$() != 0) {
+            existingAdd.setAddExpense$(advertising.getAddExpense$());
+        }
+        if (advertising.getAddPeriod() != null) {
+            existingAdd.setAddPeriod(advertising.getAddPeriod());
+        }
+        if (advertising.getAddBeginTime() != null) {
+            existingAdd.setAddBeginTime(advertising.getAddBeginTime());
+        }
+        return existingAdd;
     }
 }

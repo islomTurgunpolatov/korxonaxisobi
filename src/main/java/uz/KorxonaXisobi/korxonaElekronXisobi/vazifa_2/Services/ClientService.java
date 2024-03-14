@@ -1,5 +1,6 @@
 package uz.KorxonaXisobi.korxonaElekronXisobi.vazifa_2.Services;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.KorxonaXisobi.korxonaElekronXisobi.vazifa_1.Enums.Entities.Account;
@@ -32,5 +33,17 @@ public class ClientService {
 
     public List<Client> findClient(Long id){
         return clientRepository.findClientByEmployeeAccountId(id);
+    }
+
+    public List<String> findJshshir(){
+        return clientRepository.findJshshir();
+    }
+
+    public List<String> findPassportNumber(){
+        return clientRepository.findPassportNumber();
+    }
+
+    public void deleteClientById(Long id) {
+        clientRepository.deleteById(id);
     }
 }
